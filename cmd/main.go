@@ -309,8 +309,19 @@ func (g *Game) colorize(iter int, magSq float64) color.Color {
 }
 
 func main() {
+	// 1. Get the current monitor size
+	m := ebiten.Monitor()
+	monitorWidth, monitorHeight := m.Size()
+	windowHeight := int(float64(monitorHeight) * 0.75)
+	windowWidth := int(float64(monitorWidth) * 0.75)
 
-	ebiten.SetWindowSize(screenWidth, screenHeight)
+	// Fallback/minimum size check
+	if windowWidth < 800 || windowHeight < 600 {
+		windowWidth = 800
+		windowHeight = 600
+	}
+
+	ebiten.SetWindowSize(windowWidth, windowHeight)
 	ebiten.SetWindowTitle("Interactive Mandelbrot Set (Ebitengine)")
 
 	if err := ebiten.RunGame(NewGame()); err != nil {
